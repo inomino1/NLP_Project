@@ -10,8 +10,11 @@
 ### 주요 구성 요소
 
 - 사운드바 DB 로드/정규화
-- 로그에서 후보 문자열 생성
-- TF-IDF + 임베딩 기반 후보 검색
+- **후보 문자열 생성**: 로그 행(NAME1~4, BRAND1~4, NAME_BT)에서 검색에 사용할 질의 문자열을 추출합니다. placeholder(HDMI, AV 등) 제거, 결측값(NAN) 필터링, 브랜드+모델명 조합 생성, 중복 제거 등을 수행합니다.
+- **TF-IDF + 임베딩 기반 후보 검색**:
+  - **1차(lexical)**: TF-IDF 문자 n-gram(3~5)으로 사운드바 DB와 유사한 후보를 빠르게 Top-N(기본 200개)으로 축소합니다.
+  - **2차(semantic)**: sentence-transformers 임베딩의 코사인 유사도로 위 후보들을 재랭킹하여 최종 Top-K(기본 20개)를 반환합니다.
+  - `--accuracy` 모드: TF-IDF 없이 전체 DB에 대해 임베딩만으로 검색(정확도 우선).
 - Entity 기반 비사운드바 기기 탐지 (device_type)
 - UNKNOWN 결정
 - 평가(Accuracy/F1/Top-k/MRR)
