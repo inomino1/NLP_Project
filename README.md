@@ -12,7 +12,7 @@
 - 사운드바 DB 로드/정규화
 - **후보 문자열 생성**: 로그 행(NAME[1,2,3,4], BRAND[1,2,3,4], NAME_BT)에서 검색에 사용할 질의 문자열을 추출합니다. placeholder(HDMI, AV 등) 제거, 결측값(NAN) 필터링, 브랜드+모델명 조합 생성, 중복 제거 등을 수행합니다.
 - **임베딩 기반 후보 검색**: 전체 사운드바 모델 리스트 DB에 대해 sentence-transformers 임베딩의 코사인 유사도로 직접 검색하여 **Top-5 후보**만 반환합니다. 
-- Entity 기반 비사운드바 기기 탐지 (device_type)
+- 룰/패턴 기반 비사운드바 기기 탐지 (device_type, NER 미사용)
 - UNKNOWN 결정 : 가장 높은 후보 점수(top1)가 임계치(threshold)보다 낮으면 UNKNOWN 으로 간주하는 작업
 - 평가(Accuracy/F1/Top-k/MRR)
 
