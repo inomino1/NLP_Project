@@ -75,6 +75,16 @@ def cmd_predict(args: argparse.Namespace) -> int:
     t_start = time.perf_counter()
     try:
         log_res = load_hdmi_bt_log_csv(args.input, encoding=args.encoding)
+        # accuracy_mode 기본값: True
+        # - 별도 옵션을 주지 않으면 항상 정확도 우선 모드로 동작
+        # - 호환성을 위해 --accuracy, --no-accuracy 둘 다 지원하며,
+        #   --no-accuracy가 지정되면 accuracy_mode=False로 강제합니다.
+        accuracy_mode: bool = True
+        if getattr(args, "no_accuracy", False):
+            accuracy_mode = False
+        elif getattr(args, "accuracy", False):
+            accuracy_mode = True
+
         config_kwargs = {
             "top_n_lexical": args.top_n_lexical,
             "top_k": args.top_k,
@@ -83,7 +93,7 @@ def cmd_predict(args: argparse.Namespace) -> int:
             "include_bt": not args.no_bt,
             "accept_score_threshold": args.accept_threshold,
             "margin_threshold": args.margin_threshold,
-            "accuracy_mode": getattr(args, "accuracy", False),
+            "accuracy_mode": accuracy_mode,
             "min_cosine_similarity": None if getattr(args, "no_cosine_gate", False) else getattr(args, "min_cosine_similarity", 0.85),
         }
         workers = getattr(args, "workers", 1) or 1
@@ -289,7 +299,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_pred.add_argument("--accept-threshold", type=float, default=0.52, help="accept score threshold")
     p_pred.add_argument("--margin-threshold", type=float, default=0.05, help="top1-top2 margin threshold")
     p_pred.add_argument("--per-source", action="store_true", help="소스별(BT/HDMI) 독립 예측, 행당 최대 5개 출력")
-    p_pred.add_argument("--accuracy", action="store_true", help="NER+임베딩 전용 모드(정확도 우선, TF-IDF 비사용)")
+    p_pred.add_argument("--accuracy", action="store_true", help="NER+임베딩 전용 모드(정확도 우선, TF-IDF 비사용). 기본값: 사용")
+    p_pred.add_argument("--no-accuracy", action="store_true", help="정확도 모드 비활성화 (기존 TF-IDF+임베딩 하이브리드 사용)")
     p_pred.add_argument("--min-cosine-similarity", type=float, default=0.85, help="primary_query vs top1 직접 코사인 유사도 임계치. 미만이면 UNKNOWN")
     p_pred.add_argument("--no-cosine-gate", action="store_true", help="코사인 유사도 최종 검증 비활성화")
     p_pred.add_argument("--training", type=_path, default=None, help="training CSV(row_id, true_model) 경로. 해당 row_id의 예측을 정답으로 덮어씀")

@@ -289,10 +289,22 @@ class BaselineSoundbarMatcher:
         conf = float(top1.score) if top1 else 0.0
         if top1 and top1.score >= float(self.config.accept_score_threshold):
             predicted = top1.canonical
+        
+        # reason 결정
+        if not top1:
+            reason = "no_candidates"
+        elif predicted is None:
+            reason = f"score_below_threshold (top1_score={top1.score:.4f} < threshold={self.config.accept_score_threshold})"
+        else:
+            reason = f"score_above_threshold (top1_score={top1.score:.4f} >= threshold={self.config.accept_score_threshold})"
+        
         evidence: dict[str, Any] = {
+            "reason": reason,
+            "primary_query": typed.raw,
             "method": "baseline_levenshtein",
             "accept_score_threshold": float(self.config.accept_score_threshold),
         }
+        
         if top1:
             evidence.update(
                 {
@@ -346,12 +358,23 @@ class BaselineSoundbarMatcher:
         if top1 and top1.score >= float(self.config.accept_score_threshold):
             predicted = top1.canonical
 
+        # reason 결정
+        if not top1:
+            reason = "no_candidates"
+        elif predicted is None:
+            reason = f"score_below_threshold (top1_score={top1.score:.4f} < threshold={self.config.accept_score_threshold})"
+        else:
+            reason = f"score_above_threshold (top1_score={top1.score:.4f} >= threshold={self.config.accept_score_threshold})"
+
         evidence: dict[str, Any] = {
+            "reason": reason,
+            "primary_query": primary,
             "method": "baseline_levenshtein",
             "accept_score_threshold": float(self.config.accept_score_threshold),
             "include_bt": bool(self.config.include_bt),
             "use_brand_filter": bool(self.config.use_brand_filter),
         }
+        
         if top1:
             evidence.update(
                 {
