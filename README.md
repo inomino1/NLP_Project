@@ -1,4 +1,4 @@
-## 사운드바 모델 매핑 Agent
+<img width="96" height="52" alt="image" src="https://github.com/user-attachments/assets/c2940199-fabd-4d0e-8a5b-5a638a194d6e" /><img width="96" height="52" alt="image" src="https://github.com/user-attachments/assets/c2940199-fabd-4d0e-8a5b-5a638a194d6e" />## 사운드바 모델 매핑 Agent
 
 `raw_data/HDMI_BT_Log.csv`의 관측 기기명(`NAME1~4`, 옵션 `NAME_BT`)을 이용해, `soundbar_list.py`의 **표준 canonical 모델명**(예: `LG S90TY`)으로 매핑합니다. 불확실한 경우 **UNKNOWN**을 반환하도록 설계되어 있습니다.
 
@@ -12,7 +12,7 @@
 - 사운드바 DB 로드/정규화
 - **후보 문자열 생성**: 로그 행(NAME[1,2,3,4], BRAND[1,2,3,4], NAME_BT)에서 검색에 사용할 질의 문자열을 추출합니다. placeholder(HDMI, AV 등) 제거, 결측값(NAN) 필터링, 브랜드+모델명 조합 생성, 중복 제거 등을 수행합니다.
 - **임베딩 기반 후보 검색**: 전체 사운드바 모델 리스트 DB에 대해 sentence-transformers 임베딩의 코사인 유사도로 직접 검색하여 **Top-5 후보**만 반환합니다. 
-- 룰/패턴 기반 비사운드바 기기 탐지 (device_type, NER 미사용)
+- Entity 기반 비사운드바 기기 탐지
 - UNKNOWN 결정 : 가장 높은 후보 점수(top1)가 임계치(threshold)보다 낮으면 UNKNOWN 으로 간주하는 작업
 - 평가(Accuracy/F1/Top-k/MRR)
 
