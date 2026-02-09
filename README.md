@@ -1,6 +1,6 @@
 <img width="96" height="52" alt="image" src="https://github.com/user-attachments/assets/c2940199-fabd-4d0e-8a5b-5a638a194d6e" /><img width="96" height="52" alt="image" src="https://github.com/user-attachments/assets/c2940199-fabd-4d0e-8a5b-5a638a194d6e" />## 사운드바 모델 매핑 Agent
 
-`raw_data/HDMI_BT_Log.csv`의 관측 기기명(`NAME1~4`, 옵션 `NAME_BT`)을 이용해, `soundbar_list.py`의 **표준 canonical 모델명**(예: `LG S90TY`)으로 매핑합니다. 불확실한 경우 **UNKNOWN**을 반환하도록 설계되어 있습니다.
+`raw_data/HDMI_BT_Log.csv`의 관측 기기명(`NAME1~4`, 옵션 `NAME_BT`)을 이용해, `soundbar_list.py`의 **표준 모델명**(예: `LG S90TY`)으로 매핑합니다. 불확실한 경우 **UNKNOWN**을 반환하도록 설계되어 있습니다.
 
 ### 프로젝트 구조
 
