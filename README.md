@@ -23,7 +23,17 @@
 - **true_model**: 정답 canonical 모델명 또는 `UNKNOWN`
 - pred와 동일한 행 수·순서여야 합니다.
 
-### 실행 예시
+### Databricks에서 노트북만으로 실행
+
+`soundbar_model_agent.ipynb`는 **모든 구현이 노트북 안에 인라인**되어 있어, Python 모듈(`src/`) 없이 Databricks에 노트북만 올려서 실행할 수 있습니다.
+
+1. 노트북을 Databricks 워크스페이스에 업로드합니다.
+2. **1. 경로 설정** 셀에서 `INPUT_CSV`, `SOUNDBAR_DB`, `OUTPUT_PRED`를 DBFS 등 실제 경로로 수정합니다.
+3. 셀을 위에서부터 순서대로 실행합니다. (정규화 → 사운드바 DB → 로그 질의 → … → Agent → 데이터 로드 및 예측 → 결과 저장)
+
+노트북 재생성: `python build_databricks_notebook.py`
+
+### 실행 예시 (CLI)
 
 예측 (기본: raw_data/HDMI_BT_Log.csv → output/pred.csv):
 
